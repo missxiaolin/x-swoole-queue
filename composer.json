@@ -1,0 +1,30 @@
+{
+    "name": "xiaolin/swoole-queue",
+    "description": "queue library for swoole",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "小林",
+            "email": "462441355@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Lin\\Swoole\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "ext-swoole": "^2.0",
+        "phalcon/dd": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=5.6"
+    }
+}
