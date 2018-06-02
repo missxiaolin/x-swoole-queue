@@ -13,5 +13,5 @@ use Tests\Test\App\TestQueue;
 $config = include TESTS_PATH . '/_ci/config.php';
 
 $queue = new TestQueue();
-$queue->setRedisConfig($config['redisHost'], $config['redisAuth'], $config['redisDb'], $config['redisPort']);
-$queue->run();
+$queue->setRedisConfig($config['redisHost'], $config['redisAuth'], $config['redisDb'], $config['redisPort'])
+    ->run();

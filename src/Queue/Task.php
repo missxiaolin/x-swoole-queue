@@ -20,7 +20,7 @@ abstract class Task
      * 最大进程数
      * @var int
      */
-    protected $maxProcesses = 500;
+    protected $maxProcesses = 10;
 
     /**
      * 当前进程数
@@ -62,7 +62,7 @@ abstract class Task
      * 子进程最大循环处理次数
      * @var null
      */
-    protected $processHandleMaxNumber = null;
+    protected $processHandleMaxNumber = 10000;
 
     /**
      * Redis Host
@@ -164,6 +164,7 @@ abstract class Task
      * @param $auth
      * @param $db
      * @param $port
+     * @return mixed
      */
     public function setRedisConfig($host, $auth, $db, $port)
     {
@@ -171,6 +172,7 @@ abstract class Task
         $this->redisAuth = $auth;
         $this->redisDb = $db;
         $this->redisPort = $port;
+        return $this;
     }
 
     /**

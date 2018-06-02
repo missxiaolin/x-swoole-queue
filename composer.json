@@ -23,7 +23,8 @@
         "php": ">=7.0",
         "ext-swoole": "^2.0",
         "phalcon/dd": "^1.1",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "psr/log": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=5.6"
