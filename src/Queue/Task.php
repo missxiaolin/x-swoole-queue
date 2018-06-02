@@ -227,8 +227,14 @@ abstract class Task
                 break;
             }
 
+
             // 无任务时,阻塞等待
-            list($key, $data) = $redis->brpop($this->queueKey, 3);
+            $list = $redis->brpop($this->queueKey, 3);
+            if (!$list) {
+                break;
+            }
+
+            list($key, $data) = $list;
             if ($key != $this->queueKey) {
                 // 消息队列KEY值不匹配
                 continue;
