@@ -70,10 +70,12 @@ class Job extends Task
 
     /**
      * @param LoggerInterface $logger
+     * @return $this
      */
     public function setLoggerHandler(LoggerInterface $logger)
     {
         $this->loggerHandler = $logger;
+        return $this;
     }
 
     /**
