@@ -29,4 +29,15 @@ class BaseTest extends TestCase
         $data = file_get_contents($this->file);
         $this->assertEquals('upgrade', $data);
     }
+
+    public function testSwooleQueueJob()
+    {
+        $data = file_get_contents($this->file);
+        $this->assertEquals('init', $data);
+        $job = new TestJob('upgrade by test job!');
+        $this->redis->lPush('swoole:queue:queue', serialize($job));
+        sleep(2);
+        $data = file_get_contents($this->file);
+        $this->assertEquals('upgrade by test job!', $data);
+    }
 }
