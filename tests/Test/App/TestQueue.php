@@ -14,9 +14,9 @@ use Lin\Swoole\Queue\Task;
 class TestQueue extends Task
 {
     // 消息队列Redis键值 list lpush添加队列
-    protected $queueKey = 'swoole:queue:queue';
+    protected $queueKey = 'test:queue:queue';
     // 延时消息队列的Redis键值 zset
-    protected $delayKey = 'swoole:queue:delay';
+    protected $delayKey = 'test:queue:delay';
     // pid地址
     protected $pidPath = TESTS_PATH . '/queue.pid';
 

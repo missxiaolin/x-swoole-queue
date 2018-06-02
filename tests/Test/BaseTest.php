@@ -9,6 +9,7 @@
 namespace Tests\Test;
 
 use Lin\Swoole\Common\File\File;
+use Tests\Test\App\TestJob;
 use Tests\TestCase;
 
 class BaseTest extends TestCase
@@ -23,7 +24,7 @@ class BaseTest extends TestCase
         File::getInstance()->put($this->file, 'init');
         $data = file_get_contents($this->file);
         $this->assertEquals('init', $data);
-        $this->redis->lPush('swoole:queue:queue', 'xxxx');
+        $this->redis->lPush('test:queue:queue', 'xxxx');
         sleep(2);
         $data = file_get_contents($this->file);
         $this->assertEquals('upgrade', $data);
