@@ -8,6 +8,8 @@
 // +----------------------------------------------------------------------
 require __DIR__ . '/bootstrap.php';
 
+use \Lin\Swoole\Queue\Job;
+
 
 $config = include TESTS_PATH . '/_ci/config.php';
 
@@ -16,7 +18,7 @@ $auth = $config['redisAuth'];
 $db = $config['redisDb'];
 $port = $config['redisPort'];
 
-$queue = new \Lin\Swoole\Queue\Job();
+$queue = new Job();
 $queue->setRedisConfig($host, $auth, $db, $port)
     ->setPidPath(TESTS_PATH . 'queue2.pid')
     ->run();
