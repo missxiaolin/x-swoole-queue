@@ -6,8 +6,6 @@
  * Time: 下午1:52
  */
 
-declare(ticks=1);
-
 namespace Lin\Swoole\Queue;
 
 use Lin\Swoole\Common\File\File;
@@ -94,6 +92,12 @@ abstract class Task
      */
     public function run()
     {
+        if (version_compare(PHP_VERSION, '7.1', ">=")) {
+            pcntl_async_signals(true);
+        } else {
+            declare(ticks=1);
+        }
+
         // 验证必要参数
         $this->verify();
 
