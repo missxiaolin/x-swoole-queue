@@ -10,6 +10,7 @@ namespace Tests\Test;
 
 use Lin\Swoole\Common\File\File;
 use Tests\Test\App\ExceptionJob;
+use Tests\Test\App\ManyJob;
 use Tests\Test\App\TestJob;
 use Tests\TestCase;
 
@@ -50,5 +51,18 @@ class BaseTest extends TestCase
 
         sleep(2);
         $this->assertTrue($this->redis->lLen('swoole:queue:error') === 1);
+    }
+
+    public function testManyJob()
+    {
+        $this->redis->del('test:incr');
+
+        for ($i = 0; $i < 10; $i++) {
+            $job = new ManyJob();
+            $this->redis->lPush('swoole:queue:queue', serialize($job));
+        }
+
+        sleep(6);
+        $this->assertEquals(10, $this->redis->get('test:incr'));
     }
 }
