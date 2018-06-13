@@ -18,7 +18,6 @@ $auth = $config['redisAuth'];
 $db = $config['redisDb'];
 $port = $config['redisPort'];
 
-$queue = new Job();
-$queue->setRedisConfig($host, $auth, $db, $port)
-    ->setPidPath(TESTS_PATH . 'queue2.pid')
-    ->run();
+
+$queue = new \Tests\Test\App\Queue();
+$queue->run();

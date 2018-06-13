@@ -11,6 +11,7 @@ namespace Tests\Test;
 use Lin\Swoole\Common\File\File;
 use Tests\Test\App\ExceptionJob;
 use Tests\Test\App\ManyJob;
+use Tests\Test\App\Queue;
 use Tests\Test\App\TestJob;
 use Tests\TestCase;
 
@@ -64,5 +65,17 @@ class BaseTest extends TestCase
 
         sleep(6);
         $this->assertEquals(10, $this->redis->get('test:incr'));
+    }
+
+    public function testPushJob()
+    {
+        $data = file_get_contents($this->file);
+        $this->assertEquals('init', $data);
+        $job = new TestJob('upgrade by test job, when the queue push it!');
+        $queue = new Queue();
+        $queue->push($job);
+        sleep(2);
+        $data = file_get_contents($this->file);
+        $this->assertEquals('upgrade by test job, when the queue push it!', $data);
     }
 }

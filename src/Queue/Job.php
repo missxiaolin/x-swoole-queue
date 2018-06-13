@@ -27,6 +27,8 @@ class Job extends Task
     protected $pidPath = TESTS_PATH . '/queue.pid';
     // 日志Handler
     protected $loggerHandler;
+    // 当前redis 实例
+    protected $redis;
 
     /**
      * @param $key
@@ -100,18 +102,18 @@ class Job extends Task
             dump("[{$date}] Failed: {$name}");
 
             // 推送失败的消息对失败队列
-            $redis = static::redisChildClient('job');
+            $redis = static::redisChildClient();
             $redis->lpush($this->errorKey, $recv);
         }
     }
 
     /**
      * @desc   重载失败的Job
-     * @author limx
+     * @author xl
      */
     public function reloadErrorJobs()
     {
-        $redis = $this->redisChildClient('job');
+        $redis = $this->redisChildClient();
         while ($data = $redis->rpop($this->errorKey)) {
             $redis->lpush($this->queueKey, $data);
         }
@@ -120,12 +122,49 @@ class Job extends Task
 
     /**
      * @desc   删除所有失败的Job
-     * @author limx
+     * @author xl
      */
     public function flushErrorJobs()
     {
-        $redis = $this->redisChildClient('job');
+        $redis = $this->redisChildClient();
         $redis->del($this->errorKey);
         dump('失败的脚本已被清除！');
+    }
+
+    /**
+     * @return mixed|\Predis\Client
+     */
+    public function getRedisChildClient()
+    {
+        if (isset($this->redis) && $this->redis instanceof Redis) {
+            return $this->redis;
+        }
+
+        return $this->redis = $this->redisChildClient('job');
+    }
+
+    /**
+     * @param JobInterface $job
+     * @return int
+     */
+    public function push(JobInterface $job)
+    {
+        $redis = $this->getRedisChildClient();
+        return $redis->lpush($this->queueKey, serialize($job));
+    }
+
+    /**
+     * @param JobInterface $job
+     * @param int $time
+     * @return int
+     */
+    public function delay(JobInterface $job, $time = 0)
+    {
+        if (empty($time)) {
+            return $this->push($job);
+        }
+
+        $redis = $this->getRedisChildClient();
+        return $redis->lpush($this->queueKey, serialize($job));
     }
 }
