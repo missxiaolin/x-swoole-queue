@@ -100,7 +100,7 @@ class Job extends Task
             dump("[{$date}] Failed: {$name}");
 
             // 推送失败的消息对失败队列
-            $redis = static::redisChildClient();
+            $redis = static::redisChildClient('job');
             $redis->lpush($this->errorKey, $recv);
         }
     }
@@ -111,7 +111,7 @@ class Job extends Task
      */
     public function reloadErrorJobs()
     {
-        $redis = $this->redisChildClient();
+        $redis = $this->redisChildClient('job');
         while ($data = $redis->rpop($this->errorKey)) {
             $redis->lpush($this->queueKey, $data);
         }
@@ -124,7 +124,7 @@ class Job extends Task
      */
     public function flushErrorJobs()
     {
-        $redis = $this->redisChildClient();
+        $redis = $this->redisChildClient('job');
         $redis->del($this->errorKey);
         dump('失败的脚本已被清除！');
     }

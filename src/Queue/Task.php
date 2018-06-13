@@ -196,18 +196,22 @@ abstract class Task
     }
 
     /**
-     * @desc   子进程redis实例
-     * @author xl
-     * @return mixed
+     * 子进程redis实例
+     * @param null $uniqid
+     * @return mixed|\Predis\Client
      */
-    protected function redisChildClient()
+    protected function redisChildClient($uniqid = null)
     {
+        if (empty($uniqid)) {
+            $uniqid = uniqid();
+        }
+
         return Redis::getInstance(
             $this->redisHost,
             $this->redisAuth,
             $this->redisDb,
             $this->redisPort,
-            'child_' . uniqid()
+            'child_' . $uniqid
         );
     }
 
