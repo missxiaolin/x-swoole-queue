@@ -165,6 +165,6 @@ class Job extends Task
         }
 
         $redis = $this->getRedisChildClient();
-        return $redis->lpush($this->queueKey, serialize($job));
+        return $redis->zAdd($this->delayKey, time() + $time, serialize($job));
     }
 }
