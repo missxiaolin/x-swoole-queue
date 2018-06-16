@@ -8,9 +8,6 @@
 // +----------------------------------------------------------------------
 require __DIR__ . '/bootstrap.php';
 
-use \Lin\Swoole\Queue\Job;
-
-
 $config = include TESTS_PATH . '/_ci/config.php';
 
 $host = $config['redisHost'];
