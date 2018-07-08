@@ -113,11 +113,13 @@ class Job extends Task
      */
     public function reloadErrorJobs()
     {
-        $redis = $this->redisChildClient();
-        while ($data = $redis->rpop($this->errorKey)) {
-            $redis->lpush($this->queueKey, $data);
+        $redis = $this->getRedisChildClient();
+        $count = 0;
+        while ($data = $redis->rpoplpush($this->errorKey, $this->queueKey)) {
+            $count++;
         }
-        dump("失败的脚本已重新载入消息队列！");
+
+        return $count;
     }
 
     /**
@@ -127,8 +129,7 @@ class Job extends Task
     public function flushErrorJobs()
     {
         $redis = $this->redisChildClient();
-        $redis->del($this->errorKey);
-        dump('失败的脚本已被清除！');
+        return $redis->del($this->errorKey);
     }
 
     /**
