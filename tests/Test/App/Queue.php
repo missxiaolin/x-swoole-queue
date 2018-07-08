@@ -13,6 +13,8 @@ use Lin\Swoole\Queue\Job;
 
 class Queue extends Job
 {
+    protected $maxProcesses = 10;
+    
     /**
      * Queue constructor.
      */
