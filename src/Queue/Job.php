@@ -168,4 +168,11 @@ class Job extends Task
         $redis = $this->getRedisChildClient();
         return $redis->zAdd($this->delayKey, time() + $time, serialize($job));
     }
+
+    public function countErrorJobs()
+    {
+        $redis = $this->getRedisChildClient();
+        return $redis->lLen($this->errorKey);
+    }
+
 }
