@@ -169,6 +169,10 @@ class Job extends Task
         return $redis->zAdd($this->delayKey, time() + $time, serialize($job));
     }
 
+    /**
+     * 查询失败的消息数
+     * @return int
+     */
     public function countErrorJobs()
     {
         $redis = $this->getRedisChildClient();
