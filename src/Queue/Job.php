@@ -15,23 +15,58 @@ use Exception;
 
 class Job extends Task
 {
-    // 最大进程数
+    /**
+     * 最大进程数
+     * @var int
+     */
     protected $maxProcesses = 3;
-    // 子进程最大循环处理次数
+
+    /**
+     * 子进程最大循环处理次数
+     * @var int
+     */
     protected $processHandleMaxNumber = 10000;
-    // 失败的消息
+
+    /**
+     * 失败的消息
+     * @var string
+     */
     protected $errorKey = 'swoole:queue:error';
-    // 消息队列Redis键值 list lpush添加队列
+
+    /**
+     * 消息队列Redis键值 list lpush添加队列
+     * @var string
+     */
     protected $queueKey = 'swoole:queue:queue';
-    // 延时消息队列的Redis键值 zset
+
+    /**
+     * 延时消息队列的Redis键值 zset
+     * @var string
+     */
     protected $delayKey = 'swoole:queue:delay';
-    // pid地址
+
+    /**
+     * pid地址
+     * @var string
+     */
     protected $pidPath = TESTS_PATH . '/queue.pid';
-    // 日志Handler
+
+    /**
+     * 日志Handler
+     * @var object
+     */
     protected $loggerHandler;
-    // 当前redis 实例
+
+    /**
+     * 当前redis 实例
+     * @var object
+     */
     protected $redis;
-    // 打包器
+
+    /**
+     * 打包器
+     * @var object
+     */
     protected $packer;
 
     /**

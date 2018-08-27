@@ -31,9 +31,8 @@ trait Macroable
 
     /**
      * Mix another object into the class.
-     *
-     * @param  object $mixin
-     * @return void
+     * @param $mixin
+     * @throws \ReflectionException
      */
     public static function mixin($mixin)
     {
