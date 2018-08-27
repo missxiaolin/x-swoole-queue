@@ -8,6 +8,8 @@
 
 namespace Lin\Swoole\Queue;
 
+use Lin\Swoole\Queue\Packers\DefaultPacker;
+use Lin\Swoole\Queue\Packers\PackerInterface;
 use Psr\Log\LoggerInterface;
 use Exception;
 
@@ -29,6 +31,8 @@ class Job extends Task
     protected $loggerHandler;
     // 当前redis 实例
     protected $redis;
+    // 打包器
+    protected $packer;
 
     /**
      * @param $key
@@ -87,7 +91,8 @@ class Job extends Task
     protected function handle($recv)
     {
         try {
-            $obj = unserialize($recv);
+            $packer = $this->getPacker();
+            $obj = $packer->unpack($recv);
             if ($obj instanceof JobInterface) {
                 $name = get_class($obj);
                 $date = date('Y-m-d H:i:s');
@@ -145,13 +150,25 @@ class Job extends Task
     }
 
     /**
+     * @return DefaultPacker
+     */
+    public function getPacker()
+    {
+        if (isset($this->packer) && $this->packer instanceof PackerInterface) {
+            return $this->packer;
+        }
+        return $this->packer = new DefaultPacker();
+    }
+
+    /**
      * @param JobInterface $job
      * @return int
      */
     public function push(JobInterface $job)
     {
         $redis = $this->getRedisChildClient();
-        return $redis->lpush($this->queueKey, serialize($job));
+        $packer = $this->getPacker();
+        return $redis->lpush($this->queueKey, $packer->pack($job));
     }
 
     /**
@@ -166,7 +183,8 @@ class Job extends Task
         }
 
         $redis = $this->getRedisChildClient();
-        return $redis->zAdd($this->delayKey, time() + $time, serialize($job));
+        $packer = $this->getPacker();
+        return $redis->zAdd($this->delayKey, time() + $time, $packer->pack($job));
     }
 
     /**
