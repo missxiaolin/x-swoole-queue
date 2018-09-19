@@ -24,7 +24,7 @@ trait InstanceTrait
 
     /**
      * @desc   回收单例对象
-     * @author limx
+     * @author xl
      */
     public function flushInstance()
     {
