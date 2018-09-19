@@ -49,7 +49,7 @@ class Job extends Task
      * pid地址
      * @var string
      */
-    protected $pidPath = TESTS_PATH . '/queue.pid';
+    protected $pidPath;
 
     /**
      * 日志Handler
