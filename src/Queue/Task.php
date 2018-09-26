@@ -268,7 +268,7 @@ abstract class Task
 
     /**
      * @desc   消息队列 业务逻辑处理
-     * @author limx
+     * @author xl
      * @param $recv
      * @return mixed
      */
