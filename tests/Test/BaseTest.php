@@ -125,4 +125,9 @@ class BaseTest extends TestCase
         $this->assertEquals(1, $count);
         $this->assertTrue($this->redis->lLen('swoole:queue:error') === 0);
     }
+
+    public function testDelay()
+    {
+
+    }
 }
