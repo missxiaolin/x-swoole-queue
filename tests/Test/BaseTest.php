@@ -128,6 +128,6 @@ class BaseTest extends TestCase
 
     public function testDelay()
     {
-
+        $this->assertTrue(true);
     }
 }
