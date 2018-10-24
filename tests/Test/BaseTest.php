@@ -15,11 +15,26 @@ use Tests\Test\App\Queue;
 use Tests\Test\App\TestJob;
 use Tests\TestCase;
 
+/**
+ * Class BaseTest
+ * @package Tests\Test
+ */
 class BaseTest extends TestCase
 {
     public function testSwooleCase()
     {
         $this->assertTrue(extension_loaded('swoole'));
+    }
+
+    public function testDelay()
+    {
+        $data = file_get_contents($this->file);
+        $this->assertEquals('init', $data);
+        $job = new TestJob('upgrade by test job!');
+        $this->redis->zadd('swoole:queue:delay', time() + 3, serialize($job));
+        sleep(3);
+        $data = file_get_contents($this->file);
+        $this->assertEquals('upgrade by test job!', $data);
     }
 
     public function testSwooleQueueTask()
@@ -124,10 +139,5 @@ class BaseTest extends TestCase
         $count = $queue->flushErrorJobs();
         $this->assertEquals(1, $count);
         $this->assertTrue($this->redis->lLen('swoole:queue:error') === 0);
-    }
-
-    public function testDelay()
-    {
-        $this->assertTrue(true);
     }
 }
