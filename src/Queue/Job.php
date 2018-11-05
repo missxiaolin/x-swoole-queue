@@ -11,6 +11,7 @@ namespace Lin\Swoole\Queue;
 use Lin\Swoole\Queue\Packers\DefaultPacker;
 use Lin\Swoole\Queue\Packers\PackerInterface;
 use Psr\Log\LoggerInterface;
+use Throwable;
 use Exception;
 
 class Job extends Task
@@ -137,7 +138,7 @@ class Job extends Task
                 $date = date('Y-m-d H:i:s');
                 dump("[{$date}] Processed: {$name}");
             }
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $date = date('Y-m-d H:i:s');
             dump("[{$date}] Failed: {$name}");
 
